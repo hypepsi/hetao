@@ -22,15 +22,19 @@ export default function HomePageClient() {
   const { data: feedingData, mutate: mutateFeeding } = useSWR('/api/feeding', {
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
+    refreshInterval: 30000, // 每30秒自动刷新
   })
   const { data: trendData } = useSWR('/api/feeding/trend', {
     revalidateOnFocus: true,
+    refreshInterval: 30000,
   })
   const { data: weightData, mutate: mutateWeight } = useSWR('/api/weight', {
     revalidateOnFocus: true,
+    refreshInterval: 30000,
   })
   const { data: pooData, mutate: mutatePoo } = useSWR('/api/excretion?type=大便', {
     revalidateOnFocus: true,
+    refreshInterval: 30000,
   })
 
   const [isFeedingSheetOpen, setIsFeedingSheetOpen] = useState(false)

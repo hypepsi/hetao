@@ -25,7 +25,10 @@ npm run build
 echo "🔄 重启应用..."
 pm2 restart hetalog || pm2 start ecosystem.config.js
 
-# 保存 PM2 配置
+# 确保开机自启（仅需首次，重复执行也安全）
+pm2 startup systemd -u root --hp /root >/dev/null 2>&1 || true
+
+# 保存 PM2 配置以便重启后恢复
 pm2 save
 
 echo "✅ 部署完成！"

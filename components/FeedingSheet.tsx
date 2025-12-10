@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Sheet,
   SheetContent,
@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/form'
 import { useToast } from '@/hooks/use-toast'
-import { format, addMinutes } from 'date-fns'
+import { format, addMinutes, differenceInMinutes, parse } from 'date-fns'
 import { Droplet, Minus, Plus } from 'lucide-react'
 
 interface FeedingSheetProps {
@@ -24,17 +24,53 @@ interface FeedingSheetProps {
 export default function FeedingSheet({ open, onOpenChange, onSuccess }: FeedingSheetProps) {
   const [startTime, setStartTime] = useState(format(new Date(), "yyyy-MM-dd'T'HH:mm"))
   const [duration, setDuration] = useState(15) // 默认15分钟
+  const [endTime, setEndTime] = useState(format(addMinutes(new Date(), 15), "yyyy-MM-dd'T'HH:mm"))
   const [amount, setAmount] = useState('')
   const [loading, setLoading] = useState(false)
+  const [isUpdatingFromDuration, setIsUpdatingFromDuration] = useState(false)
   const { toast } = useToast()
+
+  // 当开始时间或持续时长变化时，更新结束时间
+  useEffect(() => {
+    if (!isUpdatingFromDuration) {
+      const start = parse(startTime, "yyyy-MM-dd'T'HH:mm", new Date())
+      const newEnd = addMinutes(start, duration)
+      setEndTime(format(newEnd, "yyyy-MM-dd'T'HH:mm"))
+    }
+  }, [startTime, duration, isUpdatingFromDuration])
+
+  // 当结束时间变化时，更新持续时长
+  const handleEndTimeChange = (newEndTime: string) => {
+    setEndTime(newEndTime)
+    setIsUpdatingFromDuration(true)
+    const start = parse(startTime, "yyyy-MM-dd'T'HH:mm", new Date())
+    const end = parse(newEndTime, "yyyy-MM-dd'T'HH:mm", new Date())
+    const diffMinutes = differenceInMinutes(end, start)
+    if (diffMinutes > 0) {
+      setDuration(diffMinutes)
+    }
+    setTimeout(() => setIsUpdatingFromDuration(false), 0)
+  }
+
+  const handleStartTimeChange = (newStartTime: string) => {
+    setStartTime(newStartTime)
+    setIsUpdatingFromDuration(false)
+    // 当开始时间变化时，重置为默认15分钟，并基于新的开始时间计算结束时间
+    const start = parse(newStartTime, "yyyy-MM-dd'T'HH:mm", new Date())
+    setDuration(15)
+    const newEnd = addMinutes(start, 15)
+    setEndTime(format(newEnd, "yyyy-MM-dd'T'HH:mm"))
+  }
 
   const handleDecrease = () => {
     if (duration > 1) {
+      setIsUpdatingFromDuration(false)
       setDuration(duration - 1)
     }
   }
 
   const handleIncrease = () => {
+    setIsUpdatingFromDuration(false)
     setDuration(duration + 1)
   }
 
@@ -49,12 +85,19 @@ export default function FeedingSheet({ open, onOpenChange, onSuccess }: FeedingS
       return
     }
 
+    const start = parse(startTime, "yyyy-MM-dd'T'HH:mm", new Date())
+    const end = parse(endTime, "yyyy-MM-dd'T'HH:mm", new Date())
+
+    if (end <= start) {
+      toast({
+        title: '结束时间必须晚于开始时间',
+        variant: 'destructive',
+      })
+      return
+    }
+
     setLoading(true)
     try {
-      // 自动计算结束时间
-      const start = new Date(startTime)
-      const end = addMinutes(start, duration)
-
       const res = await fetch('/api/feeding', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -73,8 +116,10 @@ export default function FeedingSheet({ open, onOpenChange, onSuccess }: FeedingS
         })
         onSuccess()
         // 重置表单
-        setStartTime(format(new Date(), "yyyy-MM-dd'T'HH:mm"))
+        const now = new Date()
+        setStartTime(format(now, "yyyy-MM-dd'T'HH:mm"))
         setDuration(15)
+        setEndTime(format(addMinutes(now, 15), "yyyy-MM-dd'T'HH:mm"))
         setAmount('')
       } else {
         toast({
@@ -115,7 +160,7 @@ export default function FeedingSheet({ open, onOpenChange, onSuccess }: FeedingS
               id="startTime"
               type="datetime-local"
               value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
+              onChange={(e) => handleStartTimeChange(e.target.value)}
               className="h-12 text-base rounded-2xl border-rose-100"
               required
             />
@@ -144,6 +189,18 @@ export default function FeedingSheet({ open, onOpenChange, onSuccess }: FeedingS
                 <Plus className="h-5 w-5 text-stone-700" />
               </button>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="endTime" className="text-base font-medium text-stone-700">结束时间</Label>
+            <Input
+              id="endTime"
+              type="datetime-local"
+              value={endTime}
+              onChange={(e) => handleEndTimeChange(e.target.value)}
+              className="h-12 text-base rounded-2xl border-rose-100"
+              required
+            />
           </div>
 
           <div className="space-y-2">

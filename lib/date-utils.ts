@@ -66,15 +66,16 @@ export function getDetailedBabyAge(): string {
   const years = duration.years || 0
   
   // intervalToDuration 不返回 weeks，需要手动计算
-  // 先计算总天数
-  const totalDays = differenceInDays(todayNaturalStart, birthNaturalStart)
+  // 先计算总天数（包含出生当天，所以 +1）
+  const totalDays = differenceInDays(todayNaturalStart, birthNaturalStart) + 1
   
   // 计算剩余天数（减去已计算的年、月）
   // 创建一个临时日期，加上已计算的年、月
   const tempDate = new Date(birthNaturalStart)
   tempDate.setFullYear(tempDate.getFullYear() + years)
   tempDate.setMonth(tempDate.getMonth() + months)
-  const remainingDays = differenceInDays(todayNaturalStart, tempDate)
+  // 同样包含出生当天，所以 +1
+  const remainingDays = differenceInDays(todayNaturalStart, tempDate) + 1
   
   // 从剩余天数计算周和天
   const weeks = Math.floor(remainingDays / 7)

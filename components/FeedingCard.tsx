@@ -48,8 +48,8 @@ export function FeedingCard({ feedingData, onClick }: FeedingCardProps) {
     // 立即执行一次
     updateFeedingTime()
     
-    // 每分钟更新
-    const interval = setInterval(updateFeedingTime, 60000)
+    // 每10秒更新一次，确保时间实时显示
+    const interval = setInterval(updateFeedingTime, 10000)
     return () => clearInterval(interval)
   }, [feedingData])
 

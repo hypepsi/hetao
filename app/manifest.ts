@@ -6,7 +6,8 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: '核桃日记',
     description: '小核桃的成长记录',
     start_url: '/',
-    display: 'standalone', // 核心：这是隐藏地址栏的关键
+    // 使用标准浏览器界面，避免 PWA standalone 模式
+    display: 'browser',
     background_color: '#fff1f2',
     theme_color: '#fff1f2',
     orientation: 'portrait',
