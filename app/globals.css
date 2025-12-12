@@ -42,3 +42,43 @@
   20%, 40%, 60%, 80% { transform: translateX(8px); }
 }
 
+/* Recharts 图表样式优化 - 移除移动端交互问题 */
+@layer components {
+  /* 移除所有 SVG 元素的 outline 和 focus 样式 */
+  .recharts-wrapper svg,
+  .recharts-wrapper svg *,
+  .recharts-surface,
+  .recharts-layer,
+  .recharts-bar-rectangle,
+  .recharts-rectangle {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+  
+  /* 移除 SVG 元素的 focus-visible 样式 */
+  .recharts-wrapper svg:focus,
+  .recharts-wrapper svg:focus-visible,
+  .recharts-wrapper svg *:focus,
+  .recharts-wrapper svg *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* 确保图表容器本身也没有交互副作用 */
+  .recharts-wrapper {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+  }
+  
+  /* 移除文本选择和拖拽 */
+  .recharts-text,
+  .recharts-cartesian-axis-tick-value {
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    pointer-events: none !important;
+  }
+}
+

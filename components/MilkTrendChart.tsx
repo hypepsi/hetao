@@ -87,7 +87,16 @@ export default function MilkTrendChart({ feedings }: MilkTrendChartProps) {
   }, [feedings])
 
   return (
-    <div className="w-full h-64 outline-none focus:outline-none ring-0" tabIndex={-1}>
+    <div 
+      className="w-full h-64 select-none outline-none focus:outline-none focus-visible:outline-none" 
+      tabIndex={-1}
+      style={{
+        WebkitTapHighlightColor: 'transparent',
+        WebkitTouchCallout: 'none',
+        WebkitUserSelect: 'none',
+        userSelect: 'none',
+      }}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart 
           data={chartData} 
