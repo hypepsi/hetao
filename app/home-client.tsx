@@ -200,8 +200,8 @@ export default function HomePageClient() {
             </Card>
           )}
 
-          {/* 退出按钮 - 放在所有内容最底部 */}
-          <div className="pt-8 pb-4">
+          {/* 退出按钮 - 放在所有内容最底部，需要滚动很久才能看到 */}
+          <div className="h-screen flex items-end pb-8">
             <Button 
               variant="ghost" 
               onClick={handleLogout} 
