@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   // iOS Safari PWA配置
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
     title: "核桃",
   },
   // 格式化为APP
@@ -35,7 +35,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: 'cover', // iOS刘海屏适配
-  themeColor: '#f43f5e', // PWA主题色（Rose-500）
+  themeColor: '#ffffff', // PWA主题色（白色，与页面一体）
 }
 
 export default function RootLayout({

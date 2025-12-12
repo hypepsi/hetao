@@ -9,7 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
     // ⭐ standalone 模式：像原生APP一样，没有浏览器地址栏
     display: 'standalone',
     background_color: '#ffffff',
-    theme_color: '#f43f5e',
+    theme_color: '#ffffff',
     orientation: 'portrait',
     // APP图标配置
     icons: [
