@@ -200,8 +200,11 @@ export default function HomePageClient() {
             </Card>
           )}
 
-          {/* 退出按钮 - 放在所有内容最底部 */}
-          <div className="mt-16 mb-8">
+          {/* 退出按钮 - 放在所有内容最底部，大间距确保需要滚动 */}
+          <div className="mt-32 mb-16">
+            <div className="text-center text-xs text-stone-300 mb-4">
+              v2.0 - {new Date().toISOString().split('T')[0]}
+            </div>
             <Button 
               variant="ghost" 
               onClick={handleLogout} 

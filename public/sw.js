@@ -1,5 +1,5 @@
 // HetaoLog Service Worker - 简化版
-const CACHE_NAME = 'hetalog-v1'
+const CACHE_NAME = 'hetalog-v2-force-refresh'
 
 // 安装事件
 self.addEventListener('install', (event) => {
