@@ -8,20 +8,24 @@ import { RegisterSW } from "./register-sw"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "小核桃成长记录",
-  description: "极简宝宝记录工具",
-  manifest: "/manifest",
+  title: "核桃日记",
+  description: "宝宝喂养记录",
+  manifest: "/manifest.webmanifest",
   // iOS Safari PWA配置
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "核桃日记",
+    title: "核桃",
   },
   // 格式化为APP
   applicationName: "核桃日记",
   // Android Chrome PWA配置
   other: {
     'mobile-web-app-capable': 'yes',
+  },
+  // Apple Touch Icon
+  icons: {
+    apple: '/apple-touch-icon.png',
   },
 }
 
