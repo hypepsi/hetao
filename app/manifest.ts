@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next'
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: '核桃日记',
-    short_name: '核桃',
+    short_name: '核桃日记',
     description: '宝宝喂养记录',
     start_url: '/?source=pwa',
     // ⭐ standalone 模式：像原生APP一样，没有浏览器地址栏

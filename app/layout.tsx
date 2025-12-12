@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   // iOS Safari PWA配置
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
-    title: "核桃",
+    statusBarStyle: "default",
+    title: "核桃日记",
   },
   // 格式化为APP
   applicationName: "核桃日记",
@@ -45,6 +45,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
+      <head>
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="white" />
+      </head>
       <body className={`${inter.className} bg-white`}>
         <RegisterSW />
         <SWRProvider>

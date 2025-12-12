@@ -31,8 +31,17 @@
   * {
     @apply border-border;
   }
+  html {
+    @apply bg-white;
+    margin: 0;
+    padding: 0;
+  }
   body {
-    @apply bg-zinc-50 text-foreground;
+    @apply bg-white text-foreground;
+    margin: 0;
+    padding: 0;
+    /* PWA 状态栏融合优化 */
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
