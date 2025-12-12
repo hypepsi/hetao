@@ -46,22 +46,14 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <head>
-        {/* PWA状态栏配置 */}
-        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#ffffff" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        {/* 关键修复：内联CSS确保最高优先级 */}
+        {/* 小米MIUI PWA修复 */}
         <style dangerouslySetInnerHTML={{ __html: `
           html, body {
-            overscroll-behavior-y: none;
-            overscroll-behavior-x: none;
             background-color: #ffffff !important;
             margin: 0 !important;
             padding: 0 !important;
-          }
-          /* 移除Android Chrome的顶部分割线 */
-          body::before {
-            display: none !important;
           }
         `}} />
       </head>

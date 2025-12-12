@@ -29,25 +29,40 @@ export function RegisterSW() {
       })
     }
     
-    // 关键修复：监听页面恢复，强制重置滚动和样式
-    const handleVisibilityChange = () => {
+    // 小米MIUI PWA恢复修复
+    const fixMIUIStatusBar = () => {
       if (document.visibilityState === 'visible') {
-        // PWA从后台恢复时
-        setTimeout(() => {
-          window.scrollTo(0, 0) // 滚动到顶部
-          // 强制重新应用theme-color
-          let metaTheme = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement
-          if (metaTheme) {
-            metaTheme.content = '#ffffff'
-          }
-        }, 10)
+        // 立即执行
+        window.scrollTo(0, 0)
+        document.documentElement.scrollTop = 0
+        document.body.scrollTop = 0
+        
+        // 强制刷新viewport
+        let viewport = document.querySelector('meta[name="viewport"]') as HTMLMetaElement
+        if (viewport) {
+          const content = viewport.content
+          viewport.content = 'width=1'
+          setTimeout(() => {
+            viewport.content = content
+          }, 1)
+        }
+        
+        // 强制重绘
+        document.body.style.display = 'none'
+        document.body.offsetHeight // 触发reflow
+        document.body.style.display = ''
       }
     }
     
-    document.addEventListener('visibilitychange', handleVisibilityChange)
+    // 监听多个恢复事件
+    document.addEventListener('visibilitychange', fixMIUIStatusBar)
+    window.addEventListener('pageshow', fixMIUIStatusBar)
+    window.addEventListener('focus', fixMIUIStatusBar)
     
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      document.removeEventListener('visibilitychange', fixMIUIStatusBar)
+      window.removeEventListener('pageshow', fixMIUIStatusBar)
+      window.removeEventListener('focus', fixMIUIStatusBar)
     }
   }, [])
 
