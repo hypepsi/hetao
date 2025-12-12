@@ -1,0 +1,62 @@
+/* PWA 状态栏完美融合 - 彻底修复切换后出现分割线 */
+
+/* 强制移除所有顶部间隙 */
+html {
+  background-color: #ffffff !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body {
+  background-color: #ffffff !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding-top: 0 !important;
+  /* iOS 安全区域适配 */
+  padding-top: env(safe-area-inset-top, 0) !important;
+}
+
+/* 确保主容器无顶部间隙 */
+body > div {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: none !important;
+}
+
+/* 移除任何可能的顶部阴影 */
+body > div > div:first-child,
+body > div > div > div:first-child {
+  box-shadow: none !important;
+  border-top: none !important;
+  margin-top: 0 !important;
+}
+
+/* PWA 特定修复：状态栏样式 */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari 特定修复 */
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* 移动端浏览器地址栏隐藏后的修复 */
+@media (display-mode: standalone) {
+  /* PWA 独立模式 */
+  html,
+  body {
+    overflow-x: hidden;
+  }
+  
+  body {
+    padding-top: env(safe-area-inset-top, 0) !important;
+  }
+}
+

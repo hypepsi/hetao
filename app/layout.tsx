@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import "./pwa-fix.css"
 import { Toaster } from "@/components/ui/toaster"
 import { SWRProvider } from "@/components/SWRProvider"
 import { RegisterSW } from "./register-sw"
@@ -44,15 +45,34 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" style={{ margin: 0, padding: 0, backgroundColor: '#ffffff' }}>
       <head>
         <meta name="theme-color" content="#ffffff" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="white" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
-      <body className={`${inter.className} bg-white`}>
+      <body 
+        className={`${inter.className}`} 
+        style={{ 
+          margin: 0, 
+          padding: 0, 
+          backgroundColor: '#ffffff',
+          borderTop: 'none',
+          boxShadow: 'none'
+        }}
+      >
         <RegisterSW />
         <SWRProvider>
-          <div className="max-w-[430px] mx-auto min-h-screen bg-white">
+          <div 
+            className="max-w-[430px] mx-auto min-h-screen"
+            style={{
+              backgroundColor: '#ffffff',
+              marginTop: 0,
+              paddingTop: 0,
+              borderTop: 'none',
+              boxShadow: 'none'
+            }}
+          >
             {children}
           </div>
         </SWRProvider>
