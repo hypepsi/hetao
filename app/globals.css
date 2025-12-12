@@ -42,42 +42,84 @@
   20%, 40%, 60%, 80% { transform: translateX(8px); }
 }
 
-/* Recharts 图表样式优化 - 移除移动端交互问题 */
+/* Recharts 图表样式优化 - 彻底移除移动端交互问题 */
 @layer components {
-  /* 移除所有 SVG 元素的 outline 和 focus 样式 */
+  /* 核心：移除所有 SVG 元素的 outline 和 focus 样式 */
+  .recharts-wrapper,
+  .recharts-wrapper *,
   .recharts-wrapper svg,
   .recharts-wrapper svg *,
   .recharts-surface,
+  .recharts-surface *,
   .recharts-layer,
+  .recharts-layer *,
   .recharts-bar-rectangle,
-  .recharts-rectangle {
+  .recharts-rectangle,
+  .recharts-cartesian-grid,
+  .recharts-bar,
+  .recharts-line {
     outline: none !important;
     -webkit-tap-highlight-color: transparent !important;
     -webkit-touch-callout: none !important;
     -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
     user-select: none !important;
+    -webkit-appearance: none !important;
+    border: none !important;
+    box-shadow: none !important;
   }
   
-  /* 移除 SVG 元素的 focus-visible 样式 */
+  /* 移除所有可能的焦点样式（针对小米等特殊手机） */
   .recharts-wrapper svg:focus,
   .recharts-wrapper svg:focus-visible,
+  .recharts-wrapper svg:active,
   .recharts-wrapper svg *:focus,
-  .recharts-wrapper svg *:focus-visible {
+  .recharts-wrapper svg *:focus-visible,
+  .recharts-wrapper svg *:active,
+  .recharts-surface:focus,
+  .recharts-surface:focus-visible,
+  .recharts-surface:active {
     outline: none !important;
+    outline-width: 0 !important;
+    outline-style: none !important;
+    outline-color: transparent !important;
     box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+  }
+  
+  /* 强制移除 SVG 的 focusable 属性 */
+  .recharts-wrapper svg,
+  .recharts-surface {
+    pointer-events: auto !important;
+  }
+  
+  .recharts-wrapper svg[focusable="true"] {
+    outline: none !important;
   }
   
   /* 确保图表容器本身也没有交互副作用 */
   .recharts-wrapper {
     -webkit-tap-highlight-color: transparent !important;
     outline: none !important;
+    touch-action: pan-y !important;
   }
   
   /* 移除文本选择和拖拽 */
   .recharts-text,
-  .recharts-cartesian-axis-tick-value {
+  .recharts-cartesian-axis-tick-value,
+  .recharts-cartesian-axis-tick {
     -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
     user-select: none !important;
+    pointer-events: none !important;
+  }
+  
+  /* 针对空白区域的特殊处理 */
+  .recharts-surface rect[fill="none"],
+  .recharts-surface rect[fill="transparent"] {
     pointer-events: none !important;
   }
 }

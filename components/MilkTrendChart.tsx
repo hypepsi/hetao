@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from 'react'
+import { useMemo, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { getTodayStart } from '@/lib/date-utils'
 import { format } from 'date-fns'
@@ -47,6 +47,8 @@ interface MilkTrendChartProps {
 }
 
 export default function MilkTrendChart({ feedings }: MilkTrendChartProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  
   const chartData = useMemo(() => {
     const todayStart = getTodayStart()
     const days = []
@@ -86,15 +88,51 @@ export default function MilkTrendChart({ feedings }: MilkTrendChartProps) {
     return days.slice(firstDataIndex)
   }, [feedings])
 
+  // 彻底移除所有 SVG 元素的 focusable 属性（针对小米等特殊手机）
+  useEffect(() => {
+    if (!containerRef.current) return
+    
+    const removeFocusable = () => {
+      const svgs = containerRef.current?.querySelectorAll('svg')
+      svgs?.forEach((svg) => {
+        svg.setAttribute('focusable', 'false')
+        svg.style.outline = 'none'
+        
+        // 移除所有子元素的 focusable
+        const allElements = svg.querySelectorAll('*')
+        allElements.forEach((el) => {
+          el.setAttribute('focusable', 'false')
+          if (el instanceof HTMLElement || el instanceof SVGElement) {
+            el.style.outline = 'none'
+          }
+        })
+      })
+    }
+    
+    // 立即执行一次
+    removeFocusable()
+    
+    // 延迟执行（确保 Recharts 渲染完成）
+    const timer = setTimeout(removeFocusable, 100)
+    
+    return () => clearTimeout(timer)
+  }, [chartData])
+
   return (
     <div 
+      ref={containerRef}
       className="w-full h-64 select-none outline-none focus:outline-none focus-visible:outline-none" 
       tabIndex={-1}
+      onFocus={(e) => e.preventDefault()}
+      onMouseDown={(e) => e.preventDefault()}
+      onTouchStart={(e) => e.preventDefault()}
       style={{
         WebkitTapHighlightColor: 'transparent',
         WebkitTouchCallout: 'none',
         WebkitUserSelect: 'none',
         userSelect: 'none',
+        outline: 'none',
+        pointerEvents: 'auto',
       }}
     >
       <ResponsiveContainer width="100%" height="100%">

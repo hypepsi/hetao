@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from 'react'
+import { useMemo, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { format, differenceInDays } from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
@@ -77,6 +77,8 @@ function calculateMonthAge(recordDate: Date) {
 }
 
 export default function WeightTrendChart({ weights }: WeightTrendChartProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  
   const chartData = useMemo(() => {
     const recentWeights = weights.slice(-7)
     return recentWeights.map((weight) => {
@@ -92,6 +94,36 @@ export default function WeightTrendChart({ weights }: WeightTrendChartProps) {
     })
   }, [weights])
 
+  // 彻底移除所有 SVG 元素的 focusable 属性（针对小米等特殊手机）
+  useEffect(() => {
+    if (!containerRef.current) return
+    
+    const removeFocusable = () => {
+      const svgs = containerRef.current?.querySelectorAll('svg')
+      svgs?.forEach((svg) => {
+        svg.setAttribute('focusable', 'false')
+        svg.style.outline = 'none'
+        
+        // 移除所有子元素的 focusable
+        const allElements = svg.querySelectorAll('*')
+        allElements.forEach((el) => {
+          el.setAttribute('focusable', 'false')
+          if (el instanceof HTMLElement || el instanceof SVGElement) {
+            el.style.outline = 'none'
+          }
+        })
+      })
+    }
+    
+    // 立即执行一次
+    removeFocusable()
+    
+    // 延迟执行（确保 Recharts 渲染完成）
+    const timer = setTimeout(removeFocusable, 100)
+    
+    return () => clearTimeout(timer)
+  }, [chartData])
+
   if (chartData.length === 0) {
     return (
       <div className="h-64 flex items-center justify-center text-stone-400">
@@ -102,13 +134,19 @@ export default function WeightTrendChart({ weights }: WeightTrendChartProps) {
 
   return (
     <div 
+      ref={containerRef}
       className="w-full h-64 select-none outline-none focus:outline-none focus-visible:outline-none" 
       tabIndex={-1}
+      onFocus={(e) => e.preventDefault()}
+      onMouseDown={(e) => e.preventDefault()}
+      onTouchStart={(e) => e.preventDefault()}
       style={{
         WebkitTapHighlightColor: 'transparent',
         WebkitTouchCallout: 'none',
         WebkitUserSelect: 'none',
         userSelect: 'none',
+        outline: 'none',
+        pointerEvents: 'auto',
       }}
     >
       <ResponsiveContainer width="100%" height="100%">
