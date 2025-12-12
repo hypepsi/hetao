@@ -51,9 +51,9 @@ export default function HomePageClient() {
   }
 
   return (
-    <div className="min-h-screen p-4 pb-24">
+    <div className="min-h-screen px-4 pb-24">
       {/* 顶部：宝宝年龄 */}
-      <div className="text-center pt-6 pb-6">
+      <div className="text-center pt-4 pb-6">
         <div className="flex items-center justify-center gap-2 mb-3">
           <Baby className="h-8 w-8 text-stone-600" />
           <h1 className="text-3xl font-bold text-stone-700">

@@ -45,10 +45,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <body className={`${inter.className} bg-[#FFF5F5]`}>
+      <body className={`${inter.className} bg-white`}>
         <RegisterSW />
         <SWRProvider>
-          <div className="max-w-[430px] mx-auto min-h-screen border-x border-rose-100 shadow-2xl bg-white/90 backdrop-blur-sm">
+          <div className="max-w-[430px] mx-auto min-h-screen bg-white">
             {children}
           </div>
         </SWRProvider>
