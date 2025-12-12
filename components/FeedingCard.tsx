@@ -1,5 +1,7 @@
 "use client"
 
+
+
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDuration } from '@/lib/date-utils'
@@ -95,10 +97,10 @@ export function FeedingCard({ feedingData, onClick }: FeedingCardProps) {
           </div>
           <Link 
             href="/history/feeding" 
-            className="text-xs text-stone-400 hover:text-rose-500 flex items-center gap-1"
+            className="flex items-center gap-1 px-3 py-2 text-xs text-stone-400 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-colors"
             onClick={(e) => e.stopPropagation()}
           >
-            <History className="h-3 w-3" />
+            <History className="h-4 w-4" />
             历史
           </Link>
         </div>

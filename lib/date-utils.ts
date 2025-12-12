@@ -156,7 +156,9 @@ export function formatDuration(startTime: Date, endTime?: Date): string {
 }
 
 export function formatDateTime(date: Date): string {
-  return format(date, 'yyyy-MM-dd HH:mm', { locale: zhCN })
+  // 将 UTC 时间转换为北京时间后格式化
+  const beijingTime = toZonedTime(date, TIMEZONE)
+  return format(beijingTime, 'yyyy-MM-dd HH:mm', { locale: zhCN })
 }
 
 export function formatTimeAgo(date: Date): string {
@@ -173,4 +175,38 @@ export function formatTimeAgo(date: Date): string {
   } else {
     return `${days}天前`
   }
+}
+
+/**
+ * 获取记录时间所属的统计日（B轨逻辑）
+ * 用途：将任意时间戳转换为对应的"统计日期"（YYYY-MM-DD）
+ * 逻辑：
+ *   - 如果记录时间 < 06:00，归属于前一天的统计日
+ *   - 如果记录时间 >= 06:00，归属于当天的统计日
+ * 
+ * 例如：
+ *   - 2025-12-10 23:00 → "2025-12-10"（属于12月10日统计日）
+ *   - 2025-12-11 02:00 → "2025-12-10"（属于12月10日统计日，因为<6点）
+ *   - 2025-12-11 07:00 → "2025-12-11"（属于12月11日统计日）
+ * 
+ * @param recordTime 记录时间
+ * @returns 统计日期字符串 (YYYY-MM-DD)
+ */
+export function getStatsDate(recordTime: Date): string {
+  // 转换为北京时间
+  const beijingTime = toZonedTime(recordTime, TIMEZONE)
+  
+  // 获取小时数
+  const hour = beijingTime.getHours()
+  
+  // 创建统计日期
+  const statsDate = new Date(beijingTime)
+  
+  // 如果小时 < 6，统计日期需要退回到前一天
+  if (hour < STATS_DAY_START_HOUR) {
+    statsDate.setDate(statsDate.getDate() - 1)
+  }
+  
+  // 返回统计日期字符串（YYYY-MM-DD）
+  return format(statsDate, 'yyyy-MM-dd')
 }

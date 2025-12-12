@@ -16,6 +16,8 @@ import { useToast } from '@/hooks/use-toast'
 import { format } from 'date-fns'
 import { Wind } from 'lucide-react'
 
+const TIMEZONE = 'Asia/Shanghai' // 北京时间 UTC+8
+
 interface PooSheetProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -39,12 +41,32 @@ export default function PooSheet({ open, onOpenChange, onSuccess }: PooSheetProp
     
     setLoading(true)
     try {
+      // 【核心修复】彻底解决时区偏移问题
+      // datetime-local 输入框返回的时间字符串格式：YYYY-MM-DDTHH:mm（无时区信息）
+      // 必须明确告诉系统这是北京时间（UTC+8），让系统自动转换为 UTC 存储
+      
+      // 1. 解析时间字符串，获取日期部分和时间部分
+      const [datePart, timePart] = time.split('T')
+      // datePart: "2025-12-10"
+      // timePart: "23:35"
+      
+      // 2. 【关键修复】拼接成带 +08:00 后缀的绝对时间串
+      // 明确告诉系统：这是东八区（北京时间）的时间，请自动换算成 UTC 存进去
+      // 格式：YYYY-MM-DDTHH:mm:ss+08:00
+      const isoString = `${datePart}T${timePart}:00+08:00`
+      // 例如："2025-12-10T23:35:00+08:00"
+      
+      // 3. 创建 Date 对象，JavaScript 会自动将其转换为 UTC 时间
+      const finalDate = new Date(isoString)
+      // 例如：输入 "2025-12-10T23:35:00+08:00" 
+      // JavaScript 会自动转换为 UTC: "2025-12-10T15:35:00.000Z"
+      
       const res = await fetch('/api/excretion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: '大便',
-          time: time, // 发送前端选择的时间
+          time: finalDate.toISOString(), // 发送 UTC ISO 字符串
           color: color || null,
           texture: texture || null,
           note: note || null,

@@ -13,6 +13,7 @@ import WeightTrendChart from '@/components/WeightTrendChart'
 import { FeedingCard } from '@/components/FeedingCard'
 import { DashboardSkeleton } from '@/components/DashboardSkeleton'
 import SmartFeedingCard from '@/components/SmartFeedingCard'
+import DailyFeedingStats from '@/components/DailyFeedingStats'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Baby, Wind, LogOut, History, TrendingUp, Scale } from 'lucide-react'
@@ -81,6 +82,11 @@ export default function HomePageClient() {
             onClick={() => setIsFeedingSheetOpen(true)}
           />
 
+          {/* 新增：每日喂养统计 */}
+          {feedingData?.todayFeedings && feedingData.todayFeedings.length > 0 && (
+            <DailyFeedingStats feedings={feedingData.todayFeedings} />
+          )}
+
           {/* 卡片 2：大便 */}
           <Card 
             className="bg-white/90 backdrop-blur-sm shadow-md cursor-pointer hover:shadow-lg transition-shadow active:scale-[0.98] rounded-3xl border-rose-100"
@@ -96,10 +102,10 @@ export default function HomePageClient() {
                 </div>
                 <Link 
                   href="/history/excretion?type=大便" 
-                  className="text-xs text-stone-400 hover:text-rose-500 flex items-center gap-1"
+                  className="flex items-center gap-1 px-3 py-2 text-xs text-stone-400 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <History className="h-3 w-3" />
+                  <History className="h-4 w-4" />
                   历史
                 </Link>
               </div>
@@ -131,10 +137,10 @@ export default function HomePageClient() {
                 </div>
                 <Link 
                   href="/history/weight" 
-                  className="text-xs text-stone-400 hover:text-rose-500 flex items-center gap-1"
+                  className="flex items-center gap-1 px-3 py-2 text-xs text-stone-400 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <History className="h-3 w-3" />
+                  <History className="h-4 w-4" />
                   历史
                 </Link>
               </div>
