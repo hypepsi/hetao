@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import "./pwa-fix.css"
 import { Toaster } from "@/components/ui/toaster"
 import { SWRProvider } from "@/components/SWRProvider"
 import { RegisterSW } from "./register-sw"
@@ -45,34 +44,31 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-CN" style={{ margin: 0, padding: 0, backgroundColor: '#ffffff' }}>
+    <html lang="zh-CN">
       <head>
-        <meta name="theme-color" content="#ffffff" />
+        {/* PWA状态栏配置 */}
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: dark)" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        {/* 关键修复：内联CSS确保最高优先级 */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          html, body {
+            overscroll-behavior-y: none;
+            overscroll-behavior-x: none;
+            background-color: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          /* 移除Android Chrome的顶部分割线 */
+          body::before {
+            display: none !important;
+          }
+        `}} />
       </head>
-      <body 
-        className={`${inter.className}`} 
-        style={{ 
-          margin: 0, 
-          padding: 0, 
-          backgroundColor: '#ffffff',
-          borderTop: 'none',
-          boxShadow: 'none'
-        }}
-      >
+      <body className={`${inter.className} bg-white`}>
         <RegisterSW />
         <SWRProvider>
-          <div 
-            className="max-w-[430px] mx-auto min-h-screen"
-            style={{
-              backgroundColor: '#ffffff',
-              marginTop: 0,
-              paddingTop: 0,
-              borderTop: 'none',
-              boxShadow: 'none'
-            }}
-          >
+          <div className="max-w-[430px] mx-auto min-h-screen bg-white">
             {children}
           </div>
         </SWRProvider>

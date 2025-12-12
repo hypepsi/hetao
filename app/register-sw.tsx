@@ -28,6 +28,27 @@ export function RegisterSW() {
           })
       })
     }
+    
+    // 关键修复：监听页面恢复，强制重置滚动和样式
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // PWA从后台恢复时
+        setTimeout(() => {
+          window.scrollTo(0, 0) // 滚动到顶部
+          // 强制重新应用theme-color
+          let metaTheme = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement
+          if (metaTheme) {
+            metaTheme.content = '#ffffff'
+          }
+        }, 10)
+      }
+    }
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
   }, [])
 
   return null
