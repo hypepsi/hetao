@@ -2,24 +2,35 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: '核桃日记',
+    name: '小核桃成长记录',
     short_name: '核桃日记',
-    description: '小核桃的成长记录',
+    description: '极简宝宝喂养记录工具 - 专为新手父母设计',
     start_url: '/',
-    // 使用标准浏览器界面，避免 PWA standalone 模式
-    display: 'browser',
+    // ⭐ standalone 模式：像原生APP一样，没有浏览器地址栏
+    display: 'standalone',
     background_color: '#fff1f2',
-    theme_color: '#fff1f2',
+    theme_color: '#f43f5e',
     orientation: 'portrait',
-    // 即使没有 icon.png，也必须声明 icons 才能触发 PWA 安装逻辑
-    // 这里我们复用 favicon 临时顶替
+    scope: '/',
+    // APP图标配置
     icons: [
       {
-        src: '/favicon.ico',
-        sizes: 'any',
-        type: 'image/x-icon',
+        src: '/icon-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icon-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
       },
     ],
+    // iOS 启动画面
+    screenshots: [],
+    // 类别
+    categories: ['health', 'lifestyle'],
   }
 }
 

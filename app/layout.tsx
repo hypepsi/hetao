@@ -10,11 +10,15 @@ export const metadata: Metadata = {
   title: "小核桃成长记录",
   description: "极简宝宝记录工具",
   manifest: "/manifest",
+  // iOS Safari PWA配置
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "核桃日记",
   },
+  // 格式化为APP
+  applicationName: "核桃日记",
+  // Android Chrome PWA配置
   other: {
     'mobile-web-app-capable': 'yes',
   },
