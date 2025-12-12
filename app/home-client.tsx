@@ -200,18 +200,15 @@ export default function HomePageClient() {
             </Card>
           )}
 
-          {/* 退出按钮 - 放在所有内容最底部 - 强制验证版本 */}
-          <div className="mt-32 mb-16 bg-yellow-100 border-2 border-yellow-400 rounded-lg p-4">
-            <div className="text-center text-sm font-bold text-yellow-800 mb-2">
-              🔧 验证版本 - 如果你看到这个说明代码生效了
-            </div>
+          {/* 退出按钮 - 放在所有内容最底部 */}
+          <div className="mt-32 mb-16">
             <Button 
               variant="ghost" 
               onClick={handleLogout} 
-              className="w-full text-rose-600 font-bold flex items-center justify-center gap-2 hover:text-rose-700 hover:bg-rose-50"
+              className="w-full text-stone-400 flex items-center justify-center gap-2 hover:text-rose-500 hover:bg-rose-50"
             >
-              <LogOut className="h-5 w-5" />
-              退出当前账号 v2.0
+              <LogOut className="h-4 w-4" />
+              退出登录
             </Button>
           </div>
         </div>
