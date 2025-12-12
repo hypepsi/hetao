@@ -25,9 +25,8 @@ export function FeedingCard({ feedingData, onClick }: FeedingCardProps) {
     const updateFeedingTime = () => {
       if (feedingData?.lastFeeding) {
         const lastFeeding = feedingData.lastFeeding
-        const lastTime = lastFeeding.endTime 
-          ? new Date(lastFeeding.endTime) 
-          : new Date(lastFeeding.startTime)
+        // 【医学标准】始终使用 startTime 计算间隔（Start-to-Start）
+        const lastTime = new Date(lastFeeding.startTime)
         const now = new Date()
         
         // 如果时间在未来，显示"刚刚"
