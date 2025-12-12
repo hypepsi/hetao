@@ -4,3 +4,4 @@ export default async function FeedingStatsPage() {
   return <FeedingStatsClient />
 }
 
+

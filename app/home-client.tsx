@@ -51,7 +51,7 @@ export default function HomePageClient() {
   }
 
   return (
-    <div className="min-h-screen px-4 pb-24">
+    <div className="min-h-screen px-4 pb-8">
       {/* 顶部：宝宝年龄 */}
       <div className="text-center pt-6 pb-6">
         <div className="flex items-center justify-center gap-2 mb-3">
@@ -199,20 +199,20 @@ export default function HomePageClient() {
               </CardContent>
             </Card>
           )}
+
+          {/* 退出按钮 - 放在所有内容最底部 */}
+          <div className="pt-8 pb-4">
+            <Button 
+              variant="ghost" 
+              onClick={handleLogout} 
+              className="w-full text-stone-400 flex items-center justify-center gap-2 hover:text-rose-500 hover:bg-rose-50"
+            >
+              <LogOut className="h-4 w-4" />
+              退出登录
+            </Button>
+          </div>
         </div>
       </Suspense>
-
-      {/* 退出按钮 */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-[430px] px-4">
-        <Button 
-          variant="ghost" 
-          onClick={handleLogout} 
-          className="w-full text-stone-400 flex items-center justify-center gap-2 hover:text-rose-500"
-        >
-          <LogOut className="h-4 w-4" />
-          退出登录
-        </Button>
-      </div>
 
       <FeedingSheet
         open={isFeedingSheetOpen}

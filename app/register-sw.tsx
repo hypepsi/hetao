@@ -29,28 +29,38 @@ export function RegisterSW() {
       })
     }
     
-    // 小米MIUI PWA恢复修复
+    // 小米MIUI PWA恢复修复 - 使用安全的重绘方式
     const fixMIUIStatusBar = () => {
       if (document.visibilityState === 'visible') {
-        // 立即执行
+        // 1. 立即滚动到顶部
         window.scrollTo(0, 0)
         document.documentElement.scrollTop = 0
         document.body.scrollTop = 0
         
-        // 强制刷新viewport
-        let viewport = document.querySelector('meta[name="viewport"]') as HTMLMetaElement
-        if (viewport) {
-          const content = viewport.content
-          viewport.content = 'width=1'
+        // 2. 使用安全的重绘方式（不影响CSS）
+        requestAnimationFrame(() => {
+          // 强制重新计算样式，但不破坏布局
+          const computedStyle = window.getComputedStyle(document.body)
+          void computedStyle.transform // 读取一个样式值触发reflow
+          
+          // 临时添加/移除一个无害的class来触发重绘
+          document.body.classList.add('pwa-restore-fix')
           setTimeout(() => {
-            viewport.content = content
-          }, 1)
-        }
+            document.body.classList.remove('pwa-restore-fix')
+          }, 10)
+        })
         
-        // 强制重绘
-        document.body.style.display = 'none'
-        document.body.offsetHeight // 触发reflow
-        document.body.style.display = ''
+        // 3. 刷新viewport（延迟一点避免与重绘冲突）
+        setTimeout(() => {
+          const viewport = document.querySelector('meta[name="viewport"]') as HTMLMetaElement
+          if (viewport) {
+            const content = viewport.content
+            viewport.content = 'width=device-width, initial-scale=1.001'
+            setTimeout(() => {
+              viewport.content = content
+            }, 10)
+          }
+        }, 50)
       }
     }
     
@@ -68,4 +78,3 @@ export function RegisterSW() {
 
   return null
 }
-
