@@ -36,7 +36,7 @@ export default function FeedingStatsClient() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-zinc-50 p-4">
+      <div className="min-h-screen bg-stone-50 p-4">
         <div className="max-w-2xl mx-auto">
           <div className="text-center py-12">
             <p className="text-stone-500">加载失败，请重试</p>
@@ -48,7 +48,7 @@ export default function FeedingStatsClient() {
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-zinc-50 p-4">
+      <div className="min-h-screen bg-stone-50 p-4">
         <div className="max-w-2xl mx-auto">
           <div className="text-center py-12">
             <p className="text-stone-400">加载中...</p>
@@ -61,7 +61,7 @@ export default function FeedingStatsClient() {
   const dailyStats: DailyStatsData[] = data.dailyStats || []
 
   return (
-    <div className="min-h-screen bg-zinc-50 p-4 pb-24">
+    <div className="min-h-screen bg-stone-50 p-4 pb-24">
       <div className="max-w-2xl mx-auto">
         {/* 头部 */}
         <div className="flex items-center mb-6">
@@ -107,19 +107,19 @@ export default function FeedingStatsClient() {
 
                     {/* 核心数据 */}
                     <div className="grid grid-cols-2 gap-3 mb-4">
-                      <div className="bg-rose-50 rounded-xl p-3">
+                      <div className="bg-rose-50 rounded-2xl p-3">
                         <p className="text-xs text-stone-500 mb-1">总次数</p>
                         <p className="text-lg font-bold text-rose-900">{stats.totalCount} 次</p>
                       </div>
-                      <div className="bg-rose-50 rounded-xl p-3">
+                      <div className="bg-rose-50 rounded-2xl p-3">
                         <p className="text-xs text-stone-500 mb-1">平均奶量</p>
                         <p className="text-lg font-bold text-rose-900">{stats.averageAmount} ml</p>
                       </div>
-                      <div className="bg-rose-50 rounded-xl p-3">
+                      <div className="bg-rose-50 rounded-2xl p-3">
                         <p className="text-xs text-stone-500 mb-1">最大奶量</p>
                         <p className="text-lg font-bold text-rose-900">{stats.maxAmount} ml</p>
                       </div>
-                      <div className="bg-rose-50 rounded-xl p-3">
+                      <div className="bg-rose-50 rounded-2xl p-3">
                         <p className="text-xs text-stone-500 mb-1">最小奶量</p>
                         <p className="text-lg font-bold text-rose-900">{stats.minAmount} ml</p>
                       </div>
@@ -129,19 +129,19 @@ export default function FeedingStatsClient() {
                     {stats.averageInterval !== null ? (
                       <div className="space-y-3">
                         <div className="grid grid-cols-3 gap-2">
-                          <div className="bg-stone-50 rounded-xl p-2 text-center">
+                          <div className="bg-stone-50 rounded-2xl p-2 text-center">
                             <p className="text-xs text-stone-500">平均间隔</p>
                             <p className="text-sm font-semibold text-stone-700">
                               {formatInterval(stats.averageInterval)}
                             </p>
                           </div>
-                          <div className="bg-stone-50 rounded-xl p-2 text-center">
+                          <div className="bg-stone-50 rounded-2xl p-2 text-center">
                             <p className="text-xs text-stone-500">最长</p>
                             <p className="text-sm font-semibold text-stone-700">
                               {formatInterval(stats.maxInterval)}
                             </p>
                           </div>
-                          <div className="bg-stone-50 rounded-xl p-2 text-center">
+                          <div className="bg-stone-50 rounded-2xl p-2 text-center">
                             <p className="text-xs text-stone-500">最短</p>
                             <p className="text-sm font-semibold text-stone-700">
                               {formatInterval(stats.minInterval)}
@@ -152,7 +152,7 @@ export default function FeedingStatsClient() {
                         {/* 频繁喂养提示 */}
                         <div
                           className={`
-                            rounded-xl p-3 flex items-center justify-between
+                            rounded-2xl p-3 flex items-center justify-between
                             ${isHighFrequency 
                               ? 'bg-orange-50 border border-orange-200' 
                               : 'bg-stone-50'
@@ -173,7 +173,7 @@ export default function FeedingStatsClient() {
                         </div>
                       </div>
                     ) : (
-                      <div className="bg-stone-50 rounded-xl p-3 text-center">
+                      <div className="bg-stone-50 rounded-2xl p-3 text-center">
                         <p className="text-sm text-stone-400">
                           当日仅1次记录，无间隔数据
                         </p>

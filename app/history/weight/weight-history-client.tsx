@@ -121,7 +121,7 @@ export default function WeightHistoryClient() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 p-4">
+    <div className="min-h-screen bg-stone-50 p-4">
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center mb-6">
           <Link href="/">
@@ -129,23 +129,23 @@ export default function WeightHistoryClient() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
-          <h1 className="text-2xl font-bold ml-4">体重历史</h1>
+          <h1 className="text-2xl font-bold ml-4 text-stone-700">体重历史</h1>
         </div>
 
         <div className="space-y-4">
           {data?.weights?.map((item: any) => (
-            <Card key={item.id} className="bg-white">
-              <CardContent className="p-4">
+            <Card key={item.id} className="bg-white/90 backdrop-blur-sm shadow-md rounded-3xl border-rose-100">
+              <CardContent className="p-5">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="text-lg font-semibold mb-2">
+                    <p className="text-lg font-semibold mb-2 text-stone-700">
                       {formatDateTime(new Date(item.createdAt))}
                     </p>
-                    <p className="text-sm text-zinc-600 mb-1">
+                    <p className="text-sm text-stone-500 mb-1">
                       体重：{item.kg} kg
                     </p>
                     {item.note && (
-                      <p className="text-sm text-zinc-500">备注：{item.note}</p>
+                      <p className="text-sm text-stone-400">备注：{item.note}</p>
                     )}
                   </div>
                   <div className="flex gap-2">
@@ -173,7 +173,7 @@ export default function WeightHistoryClient() {
           ))}
 
           {data?.weights?.length === 0 && (
-            <div className="text-center text-zinc-500 py-12">暂无记录</div>
+            <div className="text-center text-stone-400 py-12">暂无记录</div>
           )}
         </div>
       </div>
