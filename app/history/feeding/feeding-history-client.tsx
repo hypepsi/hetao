@@ -52,12 +52,16 @@ export default function FeedingHistoryClient() {
 
     setLoading(true)
     try {
+      // 将 datetime-local 字符串转换为 ISO 格式（带时区信息）
+      const startDate = new Date(editForm.startTime)
+      const endDate = editForm.endTime ? new Date(editForm.endTime) : null
+      
       const res = await fetch(`/api/feeding/${editingItem.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          startTime: editForm.startTime,
-          endTime: editForm.endTime || null,
+          startTime: startDate.toISOString(),
+          endTime: endDate ? endDate.toISOString() : null,
           amount: editForm.amount,
         }),
       })
